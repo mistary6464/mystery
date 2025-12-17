@@ -23,17 +23,15 @@
       letter-spacing: 0.18em;
       user-select: none;
     }
-    /* 'etc...' : 작게 + 안 사라질 정도로만 보이게 */
     #etc {
       position: fixed;
       right: 10px;
       bottom: 8px;
-      font-size: 6px;   /* 1pt는 브라우저에서 증발할 수 있어서 6px 추천 */
-      color: #555;      /* 너무 밝지 않게 */
+      font-size: 6px;   
+      color: #555;      
       cursor: pointer;
       user-select: none;
     }
-    /* 마우스가 우연히 지나가면 "어? 뭐지" 정도만 */
     #etc:hover {
       color: #777;
     }
@@ -78,7 +76,6 @@
     setInterval(render, 1000);
 
     document.getElementById("etc").addEventListener("click", () => {
-      // 다음 스테이지 파일명에 맞춰 수정 가능
       location.href = "stage1.html";
     });
   </script>
