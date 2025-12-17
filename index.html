@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WAIT</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  html,body{margin:0;height:100%;background:#000;color:#fff;font-family:monospace}
+  .wrap{display:flex;align-items:center;justify-content:center;height:100%}
+  #timer{font-size:12vw;letter-spacing:.2em}
+  #etc{
+    position:fixed;bottom:8px;right:10px;
+    font-size:1pt;color:#333;cursor:pointer;
+    user-select:none
+  }
+</style>
+</head>
+<body>
+  <div class="wrap"><div id="timer">D-10</div></div>
+  <div id="etc">etc...</div>
+
+<script>
+/* Target: 2026-01-01 00:00 UTC */
+const target = Date.UTC(2026,0,1,0,0,0);
+const timer = document.getElementById('timer');
+
+function tick(){
+  const now = Date.now();
+  let diff = Math.floor((target - now)/1000);
+  if(diff <= 0){
+    document.body.innerHTML =
+      "<div style='display:flex;align-items:center;justify-content:center;height:100%;font-family:monospace'>" +
+      "you are so late<br>or your observation is not good :(" +
+      "</div>";
+    return;
+  }
+  const d = Math.floor(diff/86400);
+  diff%=86400;
+  const h = Math.floor(diff/3600);
+  diff%=3600;
+  const m = Math.floor(diff/60);
+  const s = diff%60;
+  timer.textContent = `D-${d} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+setInterval(tick,1000); tick();
+
+document.getElementById('etc').onclick=()=>{
+  location.href="stage1.html";
+};
+</script>
+</body>
+</html>
