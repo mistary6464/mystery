@@ -1,52 +1,86 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>WAIT</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-  html,body{margin:0;height:100%;background:#000;color:#fff;font-family:monospace}
-  .wrap{display:flex;align-items:center;justify-content:center;height:100%}
-  #timer{font-size:12vw;letter-spacing:.2em}
-  #etc{
-    position:fixed;bottom:8px;right:10px;
-    font-size:1pt;color:#333;cursor:pointer;
-    user-select:none
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WAIT</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .wrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #timer {
+      font-size: 12vw;
+      letter-spacing: 0.18em;
+      user-select: none;
+    }
+    /* 'etc...' : 작게 + 안 사라질 정도로만 보이게 */
+    #etc {
+      position: fixed;
+      right: 10px;
+      bottom: 8px;
+      font-size: 6px;   /* 1pt는 브라우저에서 증발할 수 있어서 6px 추천 */
+      color: #555;      /* 너무 밝지 않게 */
+      cursor: pointer;
+      user-select: none;
+    }
+    /* 마우스가 우연히 지나가면 "어? 뭐지" 정도만 */
+    #etc:hover {
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap"><div id="timer">D-10</div></div>
+  <div class="wrap">
+    <div id="timer">D-10</div>
+  </div>
+
   <div id="etc">etc...</div>
 
-<script>
-/* Target: 2026-01-01 00:00 UTC */
-const target = Date.UTC(2026,0,1,0,0,0);
-const timer = document.getElementById('timer');
+  <script>
+    // Target: 2026-01-01 00:00:00 UTC
+    const TARGET = Date.UTC(2026, 0, 1, 0, 0, 0);
+    const timerEl = document.getElementById("timer");
 
-function tick(){
-  const now = Date.now();
-  let diff = Math.floor((target - now)/1000);
-  if(diff <= 0){
-    document.body.innerHTML =
-      "<div style='display:flex;align-items:center;justify-content:center;height:100%;font-family:monospace'>" +
-      "you are so late<br>or your observation is not good :(" +
-      "</div>";
-    return;
-  }
-  const d = Math.floor(diff/86400);
-  diff%=86400;
-  const h = Math.floor(diff/3600);
-  diff%=3600;
-  const m = Math.floor(diff/60);
-  const s = diff%60;
-  timer.textContent = `D-${d} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-setInterval(tick,1000); tick();
+    function render() {
+      const now = Date.now();
+      let diff = Math.floor((TARGET - now) / 1000);
 
-document.getElementById('etc').onclick=()=>{
-  location.href="stage1.html";
-};
-</script>
+      if (diff <= 0) {
+        document.body.innerHTML =
+          "<div style='height:100%;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;font-family:monospace;text-align:center;line-height:1.6'>" +
+          "you are so late<br>or your observation is not good :(" +
+          "</div>";
+        return;
+      }
+
+      const days = Math.floor(diff / 86400);
+      diff %= 86400;
+      const hours = Math.floor(diff / 3600);
+      diff %= 3600;
+      const mins = Math.floor(diff / 60);
+      const secs = diff % 60;
+
+      timerEl.textContent =
+        `D-${days} ${String(hours).padStart(2,"0")}:${String(mins).padStart(2,"0")}:${String(secs).padStart(2,"0")}`;
+    }
+
+    render();
+    setInterval(render, 1000);
+
+    document.getElementById("etc").addEventListener("click", () => {
+      // 다음 스테이지 파일명에 맞춰 수정 가능
+      location.href = "stage1.html";
+    });
+  </script>
 </body>
 </html>
